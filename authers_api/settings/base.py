@@ -44,7 +44,8 @@ THIRD_PARTY_APPS = [
     "django_countries",
     "phonenumber_field",
     "drf_yasg",
-    "corsheaders"
+    "corsheaders",
+    "djcelery_email",
     ]
 
 
@@ -92,16 +93,16 @@ WSGI_APPLICATION = "authers_api.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": "mydatabase",
-    }
-}
-
 # DATABASES = {
-#     "default" : env.db("DATABASE_URL")
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": "mydatabase",
+#     }
 # }
+
+DATABASES = {
+    "default" : env.db("DATABASE_URL")
+}
 
 
 PASSWORD_HASHERS = [
@@ -151,10 +152,10 @@ ADMIN_URL = "superadmin/"
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = "/static/"
+STATIC_URL = "/staticfiles/"
 STATIC_ROOT = str(ROOT_DIR / "staticfiles")
 
-MEDIA_URL = "/media/"
+MEDIA_URL = "/mediafiles/"
 MEDIA_ROOT = str(ROOT_DIR / "mediafiles")
 
 
@@ -165,6 +166,20 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
 CORS_URLS_REGEX = r"^api/.*$"
+
+AUTH_USER_MODEL = "users.User"
+
+CELERY_BROKER_URL = env("CELERY_BROKER")
+CELERY_RESULT_BACKEND = CELERY_BROKER_URL
+CELERY_ACCEPT_CONTENT = ["json"]
+CELERY_TASK_SERIALIZER = "json"
+CELERY_RESULT_SERIALIZER = "json"
+CELERY_RESULT_BACKEND_MAX_RETRIES = 10
+CELERY_TASK_SENT_EVENT = True
+
+if USE_TZ:
+    CELERY_TIMEZONE = TIME_ZONE
+
 
 LOGGING = {
     "version": 1,

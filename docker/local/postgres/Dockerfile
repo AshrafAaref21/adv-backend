@@ -1,9 +1,9 @@
 FROM postgres:15-bullseye
 
 
-COPY ./docker/local/postgres/maintenace /usr/local/bin/maintenace
+COPY ./docker/local/postgres/maintenance /usr/local/bin/maintenance
 
-RUN chmod +x /usr/local/bin/maintenace/*
+RUN chmod +x /usr/local/bin/maintenance/*
 
-RUN mv /usr/local/bin/maintenace/* /usr/local/bin/ \
-    && rmdir /usr/local/bin/maintenace
+RUN mv /usr/local/bin/maintenance/* /usr/local/bin/ \
+    && rmdir /usr/local/bin/maintenance

@@ -35,7 +35,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
 
 
 COPY --from=python-build-stage /usr/src/app/wheels /wheels/
-RUN pip install --no-cashe-dir --no-index --find-links=/wheels/ /wheels/* \
+RUN pip install --no-cache-dir --no-index --find-links=/wheels/ /wheels/* \
     && rm -rf /wheels/
 
 
@@ -46,6 +46,14 @@ RUN chmod +x /entrypoint
 COPY ./docker/local/django/start /start
 RUN sed -i 's/\r$//g' /start
 RUN chmod +x /start
+
+COPY ./docker/local/django/celery/worker/start /start-celeryworker
+RUN sed -i 's/\r$//g' /start-celeryworker
+RUN chmod +x /start-celeryworker
+
+COPY ./docker/local/django/celery/flower/start /start-flower
+RUN sed -i 's/\r$//g' /start-flower
+RUN chmod +x /start-flower
 
 
 COPY . ${APP_HOME}

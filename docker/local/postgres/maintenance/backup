@@ -10,7 +10,7 @@ source "${working_dir}/_sourced/constants.sh"
 source "${working_dir}/_sourced/messages.sh"
 
 
-message_welcome "Backing up the '${POSTGRES_DB} database...'"
+message_welcome "Backing up the '${POSTGRES_DB}' database..."
 
 if [[ "${POSTGRES_USER}" == "postgres" ]]; then
     message_error "Backing up as 'postgres' user is not allowed. Assign
@@ -30,3 +30,4 @@ pg_dump | gzip > "${BACKUP_DIR_PATH}/${backup_filename}"
 
 message_success "'${POSTGRES_DB}' database backup '${backup_filename}'
 has been created successfully and place in '${BACKUP_DIR_PATH}'"
+

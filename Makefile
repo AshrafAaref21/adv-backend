@@ -13,7 +13,7 @@ show-logs:
 show-logs-api:
 	docker compose -f local.yml logs api
 
-makemigration:
+makemigrations:
 	docker compose -f local.yml run --rm api python manage.py makemigrations
 
 migrate:
@@ -54,3 +54,6 @@ isort-diff:
 
 isort:
 	docker compose -f local.yml exec api isort . --skip venve --skip migrations
+
+backup:
+	docker compose -f local.yml exec postgres backup	
