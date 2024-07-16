@@ -35,7 +35,7 @@ DJANGO_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "django.contrib.sites"
+    "django.contrib.sites",
 ]
 
 
@@ -53,13 +53,16 @@ THIRD_PARTY_APPS = [
     "allauth.socialaccount",
     "dj_rest_auth",
     "dj_rest_auth.registration",
-    ]
+    "taggit",
+]
 
 
 LOCAL_APPS = [
     "core_apps.profiles",
     "core_apps.common",
     "core_apps.users",
+    "core_apps.articles",
+    "core_apps.ratings",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -107,9 +110,7 @@ WSGI_APPLICATION = "authers_api.wsgi.application"
 #     }
 # }
 
-DATABASES = {
-    "default" : env.db("DATABASE_URL")
-}
+DATABASES = {"default": env.db("DATABASE_URL")}
 
 
 PASSWORD_HASHERS = [
@@ -188,7 +189,6 @@ if USE_TZ:
     CELERY_TIMEZONE = TIME_ZONE
 
 
-
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "dj_rest_auth.jwt_auth.JWTCookieAuthentication",
@@ -248,8 +248,5 @@ LOGGING = {
             "formatter": "verbose",
         }
     },
-    "root": {
-            "level": "INFO",
-            "handlers": ["console"]
-    }
+    "root": {"level": "INFO", "handlers": ["console"]},
 }

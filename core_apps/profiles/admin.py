@@ -4,10 +4,10 @@ from .models import Profile
 
 class ProfileAdmin(admin.ModelAdmin):
     """Custom Profile View."""
-    list_display = ['pkid', 'id', 'user', 'gender', 'phone_number', 'country', 'city']
-    list_display_links = ['pkid','id','user']
-    list_filter = ['id', 'pkid']
 
+    list_display = ["pkid", "id", "user", "gender", "phone_number", "country", "city"]
+    list_display_links = ["pkid", "id", "user"]
+    list_filter = ["id", "pkid"]
 
 
 admin.site.register(Profile, ProfileAdmin)

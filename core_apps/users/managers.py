@@ -5,21 +5,23 @@ from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
 from django.utils.translation import gettext_lazy as _
 
+
 class CustomUsermanager(BaseUserManager):
     """Custom user Manager."""
-    def email_validator(self,email):
+
+    def email_validator(self, email):
         """email validator function."""
         try:
             validate_email(email)
             return True
         except ValidationError:
             raise ValueError(_("You must provide a valid email address."))
-    
-    def create_user(self,first_name,last_name,email,password,**extra_fields):
+
+    def create_user(self, first_name, last_name, email, password, **extra_fields):
         """Create user function."""
         if not first_name:
             raise ValueError(_("users must have a first name."))
-        
+
         if not last_name:
             raise ValueError(_("users must have a last name."))
 
@@ -28,8 +30,10 @@ class CustomUsermanager(BaseUserManager):
             self.email_validator(email)
         else:
             raise ValueError(_("users must have an email address."))
-        
-        user = self.model(first_name=first_name, last_name=last_name, email=email, **extra_fields)
+
+        user = self.model(
+            first_name=first_name, last_name=last_name, email=email, **extra_fields
+        )
         user.set_password(password)
 
         extra_fields.setdefault("is_staff", False)
@@ -37,8 +41,8 @@ class CustomUsermanager(BaseUserManager):
 
         user.save(using=self._db)
         return user
-    
-    def create_superuser(self,first_name,last_name,email,password,**extra_fields):
+
+    def create_superuser(self, first_name, last_name, email, password, **extra_fields):
         """Create super admin user function."""
 
         extra_fields.setdefault("is_staff", True)
@@ -58,8 +62,14 @@ class CustomUsermanager(BaseUserManager):
             email = self.normalize_email(email)
         else:
             raise ValueError(_("super user must have an email address."))
-        
-        user = self.create_user(first_name=first_name, last_name=last_name, email=email, password=password,**extra_fields)
+
+        user = self.create_user(
+            first_name=first_name,
+            last_name=last_name,
+            email=email,
+            password=password,
+            **extra_fields
+        )
 
         user.save(using=self._db)
         return user

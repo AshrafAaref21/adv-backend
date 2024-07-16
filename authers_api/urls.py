@@ -23,24 +23,24 @@ from drf_yasg.views import get_schema_view
 from rest_framework import permissions
 
 
-
 schema_view = get_schema_view(
     openapi.Info(
-        title= "Author Haven API",
-        default_version= "v1",
-        description= "API endpoints for Authors Haven API Course.",
-        contact= openapi.Contact(email="engashrafibrahim2020@gmail.com"),
-        license= openapi.License(name="MIT License")
+        title="Author Haven API",
+        default_version="v1",
+        description="API endpoints for Authors Haven API Course.",
+        contact=openapi.Contact(email="engashrafibrahim2020@gmail.com"),
+        license=openapi.License(name="MIT License"),
     ),
-    public= True,
-    permission_classes= (permissions.AllowAny,)
+    public=True,
+    permission_classes=(permissions.AllowAny,),
 )
 
 urlpatterns = [
     path(settings.ADMIN_URL, admin.site.urls),
     path("redoc/", schema_view.with_ui("redoc", cache_timeout=0)),
-    path("api/v1/", include('core_apps.users.urls')),
-    path("api/v1/profiles/", include('core_apps.profiles.urls')),
+    path("api/v1/", include("core_apps.users.urls")),
+    path("api/v1/profiles/", include("core_apps.profiles.urls")),
+    path("api/v1/articles/", include("core_apps.articles.urls")),
 ]
 
 admin.site.site_header = "Authors Haven API Admin"

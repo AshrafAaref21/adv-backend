@@ -10,17 +10,24 @@ from .models import User
 
 class UserAdmin(BaseUserAdmin):
     """Custom User Admin View."""
+
     ordering = ["email"]
     form = UserChangeFrom
     add_form = UserCreationFrom
     model = User
 
-    list_display = ["pkid","id", "email", "first_name","last_name","is_staff", "is_active"]
+    list_display = [
+        "pkid",
+        "id",
+        "email",
+        "first_name",
+        "last_name",
+        "is_staff",
+        "is_active",
+    ]
     list_display_links = ["pkid", "id", "email"]
 
-    list_filter = [
-        "email", "is_staff", "is_active"
-    ]
+    list_filter = ["email", "is_staff", "is_active"]
 
     fieldsets = (
         (_("Login Credentials"), {"fields": ("email", "password")}),
@@ -41,11 +48,19 @@ class UserAdmin(BaseUserAdmin):
     )
 
     add_fieldsets = (
-        (None, {
-            "classes":("wide",),
-            "fields": ("email", "first_name", "last_name",
-                       "password1", "password2")
-        }),
+        (
+            None,
+            {
+                "classes": ("wide",),
+                "fields": (
+                    "email",
+                    "first_name",
+                    "last_name",
+                    "password1",
+                    "password2",
+                ),
+            },
+        ),
     )
 
     search_fields = ["email", "first_name", "last_name"]

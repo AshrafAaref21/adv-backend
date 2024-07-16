@@ -15,8 +15,10 @@ from django_countries.serializer_fields import CountryField
 
 User = get_user_model()
 
+
 class UserSerializer(serializers.ModelSerializer):
     """User Model Serializer"""
+
     gender = serializers.CharField(source="profile.gender")
     phone_number = PhoneNumberField(source="profile.phone_number")
     profile_photo = serializers.ReadOnlyField(source="profile.profile_photo.url")
@@ -25,16 +27,22 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ["id", "email", "first_name", "last_name",
-                  "gender", "phone_number", "profile_photo",
-                  "country", "city"]
-    
+        fields = [
+            "id",
+            "email",
+            "first_name",
+            "last_name",
+            "gender",
+            "phone_number",
+            "profile_photo",
+            "country",
+            "city",
+        ]
+
     def to_representation(self, instance):
-        representation = super(
-            UserSerializer, self
-            ).to_representation(instance)
+        representation = super(UserSerializer, self).to_representation(instance)
         if instance.is_superuser:
-            representation['admin'] = True
+            representation["admin"] = True
             return representation
 
 

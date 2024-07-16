@@ -10,6 +10,7 @@ from .managers import CustomUsermanager
 
 class User(AbstractBaseUser, PermissionsMixin):
     """Class Model for custom user."""
+
     pkid = models.BigAutoField(primary_key=True, editable=False)
     id = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     first_name = models.CharField(verbose_name=_("first name"), max_length=50)
@@ -20,7 +21,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     date_joined = models.DateTimeField(default=timezone.now)
 
-    USERNAME_FIELD = 'email'
+    USERNAME_FIELD = "email"
 
     REQUIRED_FIELDS = ["first_name", "last_name"]
 
@@ -30,13 +31,12 @@ class User(AbstractBaseUser, PermissionsMixin):
         verbose_name = _("user")
         verbose_name_plural = _("users")
 
-
     def __str__(self) -> str:
         return self.first_name
 
     @property
     def get_full_name(self) -> str:
-        """Returns a full name of the user."""    
+        """Returns a full name of the user."""
         return f"{self.first_name.title()} {self.last_name.title()}"
 
     @property

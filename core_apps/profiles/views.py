@@ -15,17 +15,14 @@ from .exceptions import CantFollowYourself
 from .models import Profile
 from .pagination import ProfilePagination
 from .renderers import ProfileJSONRenderer, ProfilesJSONRenderer
-from .serializers import (
-    ProfileSerializer,
-    FollowingSerializer,
-    UpdateProfileSerializer
-)
+from .serializers import ProfileSerializer, FollowingSerializer, UpdateProfileSerializer
 
 User = get_user_model()
 
 
 class ProfileListAPIView(generics.ListAPIView):
     """List view for Profile model."""
+
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
     pagination_class = ProfilePagination
@@ -34,21 +31,23 @@ class ProfileListAPIView(generics.ListAPIView):
 
 class ProfileDetailAPIView(generics.RetrieveAPIView):
     """single profile view."""
+
     permission_classes = [IsAuthenticated]
     serializer_class = ProfileSerializer
     renderer_classes = [ProfileJSONRenderer]
 
     def get_queryset(self):
         return Profile.objects.select_related("user")
-    
+
     def get_object(self):
         user = self.request.user
         profile = self.get_queryset().get(user=user)
         return profile
-    
+
 
 class UpdateProfileAPIView(generics.RetrieveAPIView):
     """Update user profile view."""
+
     serializer_class = UpdateProfileSerializer
     permission_classes = [IsAuthenticated]
     parser_classes = [MultiPartParser]
@@ -56,17 +55,18 @@ class UpdateProfileAPIView(generics.RetrieveAPIView):
 
     def get_object(self):
         return self.request.user.profile
-    
+
     def patch(self, request, *args, **kargs):
         instance = self.get_object()
         serializer = self.get_serializer(instance, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_200_OK)
-    
+
 
 class FollowerListView(APIView):
     """List of followers view."""
+
     permission_classes = [IsAuthenticated]
 
     def get(self, request, format=None):
@@ -78,11 +78,11 @@ class FollowerListView(APIView):
             formatted_response = {
                 "status_code": status.HTTP_200_OK,
                 "followers_count": follower_profiles.count(),
-                "followers": serializer.data
+                "followers": serializer.data,
             }
 
             return Response(formatted_response, status=status.HTTP_200_OK)
-        
+
         except Profile.DoesNotExist:
             Response(status=status.HTTP_404_NOT_FOUND)
 
@@ -101,26 +101,27 @@ class FollowingListView(APIView):
             formatted_response = {
                 "status_code": status.HTTP_200_OK,
                 "following_count": following_profiles.count(),
-                "users_i_follow": serializer.data
+                "users_i_follow": serializer.data,
             }
 
             return Response(formatted_response, status=status.HTTP_200_OK)
-        
+
         except Profile.DoesNotExist:
             Response(status=status.HTTP_404_NOT_FOUND)
 
 
 class FollowAPIView(APIView):
     """Follow view."""
-    def post(self,request, user_id, format=None):
+
+    def post(self, request, user_id, format=None):
         try:
-            follower = Profile.objects.get(user = self.request.user)
+            follower = Profile.objects.get(user=self.request.user)
             user_profile = request.user.profile
-            profile = Profile.objects.get(user__id = user_id)
+            profile = Profile.objects.get(user__id=user_id)
 
             if profile == follower:
                 raise CantFollowYourself()
-            
+
             if user_profile.check_following(profile):
                 formatted_response = {
                     "status_code": status.HTTP_400_BAD_REQUEST,
@@ -128,7 +129,7 @@ class FollowAPIView(APIView):
                 }
 
                 return Response(formatted_response, status=status.HTTP_400_BAD_REQUEST)
-            
+
             user_profile.follow(profile)
 
             subject = "A new User follows you"
@@ -136,26 +137,24 @@ class FollowAPIView(APIView):
             from_email = DEFAULT_FROM_EMAIL
             recipients_list = [profile.user.email]
 
-            send_mail(
-                subject, message, from_email, recipients_list, fail_silently=True
-            )
+            send_mail(subject, message, from_email, recipients_list, fail_silently=True)
 
             return Response(
                 {
-                    "status_code":status.HTTP_200_OK,
-                    "message": f"You are following {profile.user.first_name} {profile.user.last_name}"
+                    "status_code": status.HTTP_200_OK,
+                    "message": f"You are following {profile.user.first_name} {profile.user.last_name}",
                 },
-                status=status.HTTP_200_OK
+                status=status.HTTP_200_OK,
             )
-        
+
         except Profile.DoesNotExist:
             raise NotFound("You can't follow a profile doesn't exists.")
-        
+
 
 class UnfollowAPIVIEW(APIView):
     """Unfollow view."""
+
     def post(self, request, user_id, *args, **kargs):
-        
         user_profile = request.user.profile
         profile = Profile.objects.get(user__id=user_id)
 
@@ -166,16 +165,12 @@ class UnfollowAPIVIEW(APIView):
             }
 
             return Response(formatted_response, status=status.HTTP_400_BAD_REQUEST)
-        
+
         user_profile.unfollow(profile)
         return Response(
             {
-                "status_code":status.HTTP_200_OK,
-                "message": f"You have unfollowed {profile.user.first_name} {profile.user.last_name}"
+                "status_code": status.HTTP_200_OK,
+                "message": f"You have unfollowed {profile.user.first_name} {profile.user.last_name}",
             },
-            status=status.HTTP_200_OK
+            status=status.HTTP_200_OK,
         )
-
-
-
-                

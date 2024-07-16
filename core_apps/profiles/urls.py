@@ -9,7 +9,7 @@ from .views import (
     UnfollowAPIVIEW,
 )
 
-app_name = 'profile'
+app_name = "profile"
 
 urlpatterns = [
     path("all/", ProfileListAPIView.as_view(), name="all-profiles"),
