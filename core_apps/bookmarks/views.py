@@ -1,9 +1,6 @@
 from uuid import UUID
 
-from rest_framework.generics import (
-    CreateAPIView,
-    DestroyAPIView
-    )
+from rest_framework.generics import CreateAPIView, DestroyAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import ValidationError, NotFound
 from django.db import IntegrityError
@@ -15,6 +12,7 @@ from core_apps.articles.models import Article
 
 class BookmarkCreateView(CreateAPIView):
     """Bookmark create api view. | POST."""
+
     queryset = Bookmark.objects.all()
     serializer_class = BookmarkSerializer
     permission_classes = [IsAuthenticated]
@@ -38,9 +36,9 @@ class BookmarkCreateView(CreateAPIView):
             raise ValidationError("You have already bookmarked this article.")
 
 
-
 class BookmarkDestroyView(DestroyAPIView):
     """Delete Bookmarked article api view."""
+
     queryset = Bookmark.objects.all()
     lookup_field = "article_id"
     permission_classes = [IsAuthenticated]
@@ -53,22 +51,18 @@ class BookmarkDestroyView(DestroyAPIView):
             UUID(str(article_id), version=4)
         except ValueError:
             raise ValidationError("Invalid article_id provided")
-        
+
         try:
-            bookmark = Bookmark.objects.get(
-               user = user,
-               article__id=article_id 
-            )
+            bookmark = Bookmark.objects.get(user=user, article__id=article_id)
             return bookmark
-        
+
         except Bookmark.DoesNotExist:
             raise NotFound("Bookmark not found or you don't own it.")
 
-    
     def perform_destroy(self, instance):
         user = self.request.user
 
         if instance.user != user:
             raise ValidationError("You cannot delete a bookmark that's not yours.")
-        
+
         instance.delete()

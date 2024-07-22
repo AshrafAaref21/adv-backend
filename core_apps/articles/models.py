@@ -12,6 +12,18 @@ from .read_time_engine import ArticleReadTimeEngine
 User = get_user_model()
 
 
+class Clap(TimeStampeModel):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    article = models.ForeignKey("Article", on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ["user", "article"]
+        ordering = ["-created_at"]
+
+    def __str__(self) -> str:
+        return f"{self.user.get_full_name} clapped {self.article.title}"
+
+
 class Article(TimeStampeModel):
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="articles")
     title = models.CharField(verbose_name=_("Title"), max_length=255)
@@ -24,6 +36,8 @@ class Article(TimeStampeModel):
 
     tags = TaggableManager()
 
+    claps = models.ManyToManyField(User, through=Clap, related_name="clapped_articles")
+
     def __str__(self) -> str:
         return f"{self.author.first_name.title()}'s article"
 
@@ -33,7 +47,7 @@ class Article(TimeStampeModel):
 
     def view_count(self):
         return self.article_views.count()
-    
+
     def average_rating(self):
         ratings = self.ratings.all()
         if ratings.count() > 0:
