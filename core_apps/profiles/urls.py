@@ -1,12 +1,12 @@
 from django.urls import path
 
 from .views import (
-    ProfileListAPIView,
-    ProfileDetailAPIView,
-    UpdateProfileAPIView,
-    FollowerListView,
     FollowAPIView,
+    FollowerListView,
+    ProfileDetailAPIView,
+    ProfileListAPIView,
     UnfollowAPIVIEW,
+    UpdateProfileAPIView,
 )
 
 app_name = "profile"

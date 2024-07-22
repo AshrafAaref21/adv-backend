@@ -2,11 +2,11 @@
 
 from django.contrib.auth import get_user_model
 from django.db import models
-from django_countries.fields import CountryField
 from django.utils.translation import gettext_lazy as _
+from django_countries.fields import CountryField
 from phonenumber_field.modelfields import PhoneNumberField
-from core_apps.common.models import TimeStampeModel
 
+from core_apps.common.models import TimeStampeModel
 
 User = get_user_model()
 

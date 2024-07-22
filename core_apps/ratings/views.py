@@ -1,11 +1,12 @@
 from django.db import IntegrityError
 from rest_framework import generics, permissions
+from rest_framework.exceptions import ValidationError
+
+from core_apps.articles.models import Article
 
 from .exceptions import CannotRateTwice
-from .serializers import RatingSerializer
 from .models import Rating
-from core_apps.articles.models import Article
-from rest_framework.exceptions import ValidationError
+from .serializers import RatingSerializer
 
 
 class RatingCreateView(generics.CreateAPIView):

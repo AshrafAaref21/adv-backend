@@ -1,8 +1,7 @@
-from django.db import models
 from django.contrib.auth import get_user_model
+from django.db import models
 
 from core_apps.articles.models import Article
-
 
 User = get_user_model()
 

@@ -1,13 +1,14 @@
 from uuid import UUID
 
+from django.db import IntegrityError
+from rest_framework.exceptions import NotFound, ValidationError
 from rest_framework.generics import CreateAPIView, DestroyAPIView
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.exceptions import ValidationError, NotFound
-from django.db import IntegrityError
+
+from core_apps.articles.models import Article
 
 from .models import Bookmark
 from .serializers import BookmarkSerializer
-from core_apps.articles.models import Article
 
 
 class BookmarkCreateView(CreateAPIView):

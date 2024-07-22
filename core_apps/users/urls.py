@@ -1,5 +1,5 @@
-from django.urls import path, include
 from dj_rest_auth.views import PasswordResetConfirmView
+from django.urls import include, path
 
 from .views import CustomUserDetailsView
 
