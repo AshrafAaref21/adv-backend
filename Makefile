@@ -63,3 +63,9 @@ es:
 
 es-populate:
 	docker compose -f local.yml exec api python manage.py search_index --populate
+
+test-cov:
+	docker compose -f local.yml run --rm api pytest -p no:warnings --cov=. -v
+
+test-cov-html:
+	docker compose -f local.yml run --rm api pytest -p no:warnings --cov=. --cov-report html
