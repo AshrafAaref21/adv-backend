@@ -7,6 +7,7 @@ from core_apps.bookmarks.serializers import BookmarkSerializer
 from core_apps.responses.serializers import ResponseSerializer
 from core_apps.responses.models import Response
 
+
 class TagListField(serializers.Field):
     def to_representation(self, value):
         return [tag.name for tag in value.all()]
@@ -41,8 +42,7 @@ class ArticleSerializer(serializers.ModelSerializer):
     created_at = serializers.SerializerMethodField()
     updated_at = serializers.SerializerMethodField()
 
-
-    def get_responses_count(self,obj):
+    def get_responses_count(self, obj):
         return obj.responses.count()
 
     def get_claps_count(self, obj):

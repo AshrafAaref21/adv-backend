@@ -56,4 +56,10 @@ isort:
 	docker compose -f local.yml exec api isort . --skip venve --skip migrations
 
 backup:
-	docker compose -f local.yml exec postgres backup	
+	docker compose -f local.yml exec postgres backup
+
+es:
+	docker compose -f local.yml exec api python manage.py search_index --create
+
+es-populate:
+	docker compose -f local.yml exec api python manage.py search_index --populate

@@ -1,5 +1,6 @@
-POSTGRES_HOST = postgres
-POSTGRES_PORT = 5432
-POSTGRES_DB = authors-live
-POSTGRES_USER = alphamale
-POSTGRES_PASSWORD = Pass@1234
+POSTGRES_HOST=postgres
+POSTGRES_PORT=5432
+POSTGRES_DB=authors-live
+POSTGRES_USER=alphamale
+POSTGRES_PASSWORD=Pass@1234
+DATABSE_URL=postgres://alphamale:Pass@1234@postgres:5432/authors-live
