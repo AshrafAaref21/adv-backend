@@ -6,7 +6,7 @@ from celery import Celery
 from django.conf import settings
 
 # TODO: Change this in production
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "authers_api.settings.local")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "authers_api.settings.production")
 
 
 app = Celery("authers_api")
