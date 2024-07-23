@@ -15,6 +15,7 @@ mediafiles
 
 .envs/*
 !.envs/.local/
+!.envs/.production/
 
 
 # Distribution / packaging

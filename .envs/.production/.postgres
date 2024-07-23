@@ -1,0 +1,6 @@
+POSTGRES_HOST=postgres
+POSTGRES_PORT=5432
+POSTGRES_DB=authors-live
+POSTGRES_USER=alphaseer
+POSTGRES_PASSWORD=Passx1234HHxksai125nxczu
+DATABSE_URL=postgres://alphaseer:Passx1234HHxksai125nxczu@postgres:5432/authors-live
